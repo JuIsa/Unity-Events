@@ -45,8 +45,14 @@ This scene is only for testing events, delegates.
 * SpherePrefab
 * SphereMeterial
 
+Instantiate 400 spheres by 20x20 shape.
+All spheres starting from the first line start to move up and down every 0.1 seconds.
+
 ### Tile Generator
 
 * ```TileGenerator.cs```
 * BlockPrefab
 * image.jpg
+
+The idea of this scene is to get pixels' colors of image and spawn cubes of that colors.
+It is done using Unity's  ```GetPixels``` which return an array of colors. The image size is 512x512 but it will end up instantiating 262144 cubes which is too much for now. What I did instead is transform initial array or colors to 2D array with length 512x512.Then I transform given 2D array to a smaller array with length 64x64 by getting average color of 64 pixels. Final result is pretty gratifying.
