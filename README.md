@@ -6,12 +6,13 @@ This repository is only for experimenting and fun
 
 There are different scenes for variuos experiments. For instance, *Dance* scene if for experimenting with prefabs behaviour.
 
-```
-SampleScene.scene
-Dance.scene
-TileGenerator.scene
+[SampleScene.scene](#Events)
 
-```
+[Dance.scene](#Dance)
+
+[TileGenerator.scene](#Tiles)
+
+
 
 ## Scripts
 
@@ -32,25 +33,25 @@ Separate folder for prefabs, mostly of those that will be spawned a lot of times
 
 Separate folder for materials.
 
-### Sample Scene
+### <a name="Events">Events</a>
 
-* ```Main.cs```, ```Event1.cs```, ```Event2.cs```, ```Subscriber1.cs```, ```Subscriber2.cs```
+* ```Main.cs```, [Event1.cs](https://github.com/JuIsa/Unity-Events/blob/master/TonsOfEvents/Assets/Scripts/Events/Event1.cs), [Event2.cs](https://github.com/JuIsa/Unity-Events/blob/master/TonsOfEvents/Assets/Scripts/Events/Event2.cs),[Subscriber1.cs](https://github.com/JuIsa/Unity-Events/blob/master/TonsOfEvents/Assets/Scripts/Events/Subscriber1.cs), [Subscriber2.cs](https://github.com/JuIsa/Unity-Events/blob/master/TonsOfEvents/Assets/Scripts/Events/Subscriber2.cs)
 *
 
 This scene is only for testing events, delegates. 
 
-### Dance
+### <a name="Dance">Dance</a>
 
-* ```Dance.cs```
+* [DanceOfCubes.cs](https://github.com/JuIsa/Unity-Events/blob/master/TonsOfEvents/Assets/Scripts/Dance/DanceOfCubes.cs), [SelfAware.cs](https://github.com/JuIsa/Unity-Events/blob/master/TonsOfEvents/Assets/Scripts/Dance/SelfAware.cs)
 * SpherePrefab
 * SphereMeterial
 
 Instantiate 400 spheres by 20x20 shape.
 All spheres starting from the first line start to move up and down every 0.1 seconds.
 
-### Tile Generator
+### <a name="Tiles">Tiles</a>
 
-* ```TileGenerator.cs```
+* [TileGenerator.cs](https://github.com/JuIsa/Unity-Events/blob/master/TonsOfEvents/Assets/Scripts/Tiles/TileGenerator.cs)
 * BlockPrefab
 * image.jpg
 
