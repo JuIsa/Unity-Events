@@ -9,7 +9,7 @@ public class Aizawa : MonoBehaviour
 
     public double time;
 
-    public enum AttractorOf { Aizawa, Lorenz};
+    public enum AttractorOf { Aizawa, Lorenz, Rossler};
 
     public AttractorOf chooseAttractor;
 
@@ -32,6 +32,11 @@ public class Aizawa : MonoBehaviour
     double dx;
     double dy;
     double dz;
+
+    float xx;
+    float yy;
+    float zz;
+
     void Start()
     {
         //set x = 0.1 , y,z = 0
@@ -43,14 +48,18 @@ public class Aizawa : MonoBehaviour
         }
         else if(chooseAttractor == AttractorOf.Aizawa) {
             a = 0.95;
-            b = 0.7;
+            b = 0.8;
             c = 0.6;
-            d = 3.5;
+            d = 3.7;
             e = 0.25;
             f = 0.1;
             time = 0.01f;
         }
-        
+        else if(chooseAttractor == AttractorOf.Rossler) {
+            a = 0.2;
+            b = 0.2;
+            c = 5.7;
+        }
     }
 
     
@@ -71,9 +80,9 @@ public class Aizawa : MonoBehaviour
                 dz = c + a * z - (Math.Pow(z, 3) / 3) - (Math.Pow(x, 2) + Math.Pow(y, 2)) * (1 + e * z) + f * z * (Math.Pow(x, 3));
                 dz *= time;
                 
-                float xx = Convert.ToSingle(dx);
-                float yy = Convert.ToSingle(dy);
-                float zz = Convert.ToSingle(dz);
+                xx = Convert.ToSingle(dx);
+                yy = Convert.ToSingle(dy);
+                zz = Convert.ToSingle(dz);
                 _particles[i].position += new Vector3(xx, yy, zz);
             }
         } 
@@ -87,13 +96,28 @@ public class Aizawa : MonoBehaviour
                 dy = y + (x * (b - z) - y) * time;
                 dz = z + (x * y - c * z) * time;
                 
-                float xx = Convert.ToSingle(dx);
-                float yy = Convert.ToSingle(dy);
-                float zz = Convert.ToSingle(dz);
+                xx = Convert.ToSingle(dx);
+                yy = Convert.ToSingle(dy);
+                zz = Convert.ToSingle(dz);
                 _particles[i].position = new Vector3(xx, yy, zz);
             }
         }
+        else if(chooseAttractor == AttractorOf.Rossler) {
+            for(int i = 0; i < alive; i++) {
+                x = _particles[i].position.x;
+                y = _particles[i].position.y;
+                z = _particles[i].position.z;
 
+                dx = (-y - z)*time;
+                dy = (x + a * y)*time;
+                dz = (b + z * (x - c))*time;
+                Debug.Log(dx + "----" + dy + "----" + dz);
+                float xx = Convert.ToSingle(dx);
+                float yy = Convert.ToSingle(dy);
+                float zz = Convert.ToSingle(dz);
+                _particles[i].position += new Vector3(xx, yy, zz);
+            }
+        }
         ps.SetParticles(_particles,alive);
 
 
