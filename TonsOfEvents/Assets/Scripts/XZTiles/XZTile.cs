@@ -53,8 +53,13 @@ public class XZTile
         }
         return final;
     }
+
     public string GetCore() {
         return _core;
+    }
+
+    public List<string> getTiles_Z() {
+        return _zfront;
     }
 
     public static GameObject generate(string what, List<XZTile> list) {
@@ -69,47 +74,50 @@ public class XZTile
         if (core == "ground") {
             CompleteGround();
         }
-        else if (core=="tower1") {
+        else if (core=="towerxz") {
             CompleteTowerXZ();
         }
-        else if (core == "tower2") {
+        else if (core == "tower_xz") {
             CompleteTower_XZ();
         }
-        else if (core == "tower3") {
+        else if (core == "towerx_z") {
             CompleteTowerX_Z();
         }
-        else if (core == "tower4") {
+        else if (core == "tower_x_z") {
             CompleteTower_X_Z();
         }
-        else if (core == "wallR") {
+        else if (core == "wall_x") {
             CompleteWall_X();
         }
-        else if (core == "wallL") {
+        else if (core == "wall_z") {
             CompleteWall_Z();
         }
-        else if (core == "build1") {
+        else if (core == "buildingxz") {
             CompleteBuildingXZ();
         }
-        else if (core == "build2") {
+        else if (core == "building_xz") {
             CompleteBuilding_XZ();
         }
-        else if (core == "build3") {
+        else if (core == "buildingx_z") {
             CompleteBuildingX_Z();
         }
-        else if (core == "build4") {
+        else if (core == "building_x_z") {
             CompleteBuilding_X_Z();
         }
-        else if (core == "build5") {
+        else if (core == "buildingxx") {
             CompleteBuildingXX();
         }
-        else if (core == "build6") {
+        else if (core == "building_xx") {
             CompleteBuilding_XX();
         }
-        else if (core == "build7") {
+        else if (core == "buildingzz") {
             CompleteBuildingZZ();
         }
-        else if (core == "build8") {
+        else if (core == "building_zz") {
             CompleteBuilding_ZZ();
+        }
+        else if(core== "buildingcenter") {
+            CompleteBuildingCenter();
         }
     }
 
@@ -185,8 +193,8 @@ public class XZTile
         this._xfront = new List<string> { "ground" };
         this._xback = new List<string> { "ground" };
 
-        this._zfront = new List<string> { "towerx_z", "tower_x_z" };
-        this._zback = new List<string> { "towerxz","tower_xz" };
+        this._zfront = new List<string> { "wall_z","towerx_z", "tower_x_z" };
+        this._zback = new List<string> { "towerxz","tower_xz","wall_z" };
     }
     #endregion
 
@@ -272,7 +280,18 @@ public class XZTile
         this._zback = new List<string> { "ground" };
 
     }
+
+    private void CompleteBuildingCenter() {
+        this._xfront = new List<string> { "buildingxx" };
+        this._xback = new List<string> { "building_xx" };
+
+        this._zfront = new List<string> { "buildingzz" };
+        this._zback = new List<string> { "building_zz" };
+    }
+
     #endregion
+
+
 
     #endregion
 

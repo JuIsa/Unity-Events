@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8156527825763556800}
   - component: {fileID: 894747827974367222}
   - component: {fileID: 6869749766989617935}
+  - component: {fileID: 7893810360472804063}
   m_Layer: 0
   m_Name: gatezz
   m_TagString: Untagged
@@ -78,3 +79,16 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &7893810360472804063
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5146091616123957203}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.02, y: 0.020000001, z: 0.040118136}
+  m_Center: {x: 1.3229976e-16, y: -4.380909e-10, z: 0.01878141}

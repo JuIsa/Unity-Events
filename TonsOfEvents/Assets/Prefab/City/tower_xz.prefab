@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2075372852180433694}
   - component: {fileID: 7031862997991227688}
   - component: {fileID: 3650936368612310481}
+  - component: {fileID: 3460347428878376214}
   m_Layer: 0
   m_Name: tower_xz
   m_TagString: Untagged
@@ -78,3 +79,16 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &3460347428878376214
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3068760335212267789}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.02, y: 0.02, z: 0.06864338}
+  m_Center: {x: -3.853892e-10, y: 3.853887e-10, z: 0.033044036}
