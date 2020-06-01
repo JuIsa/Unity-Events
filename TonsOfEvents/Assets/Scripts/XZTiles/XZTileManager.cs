@@ -1,8 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using UnityEngine;
-using UnityEngine.Tilemaps;
+
 
 public class XZTileManager : MonoBehaviour
 {
@@ -30,8 +29,11 @@ public class XZTileManager : MonoBehaviour
     public GameObject buildingcenterPref;
     #endregion
 
-    private float rayDistance = 2.0f;
-    private float rayDuration = 20.0f;
+    private float _rayDistance = 2.0f;
+    private float _rayDuration = 20.0f;
+    private float _SpawnTimer = 0.3f;
+    private int _grid_x = 20;
+    private int _grid_z = 20;
 
     private string[] tiles = new string[] {"towerxz", "tower_xz", "towerx_z", "tower_x_z",
                                             "ground",
@@ -92,36 +94,41 @@ public class XZTileManager : MonoBehaviour
 
     public IEnumerator startShooting() {
         while (true) {
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < _grid_x; i++) {
                 z = 0;
-                for (int j = 0; j < 10; j++) {
+                for (int j = 0; j < _grid_z; j++) {
                     List<string> possibleTiles = new List<string>();
-                    if (j == 0) {
+                    if (i != 0 && j == 0) {
+                        string[] possibleTile = shootRays(x, z);
+                        //XZTile previousZTile = whatIsPreviousZTile(possibleTile[0]);
+                        XZTile previousXTile = whatIsPreviousXTile(possibleTile[1]);
+
+                        possibleTiles = previousXTile.getTiles_X();
+                        if (possibleTiles == null) Debug.Log("f");
+                    }
+                    else if(i!=0 && j != 0) {
+                        string[] possibleTile = shootRays(x, z);
+                        XZTile previousZTile = whatIsPreviousZTile(possibleTile[0]);
+                        XZTile previousXTile = whatIsPreviousXTile(possibleTile[1]);
+                        possibleTiles = findCommonTile(previousZTile, previousXTile);
+                        Debug.Log(possibleTiles.Count+" "+possibleTiles[0]);
+                    }
+                    else if (j == 0) {
                         string randomTile = tiles[Random.Range(0, tiles.Length)];
                         possibleTiles = new List<string> { randomTile };
                     }
-                    else{
-                        string possibleTile = shootRays(x, z);
-                        XZTile previousXZTile = whatIsPreviousTile(possibleTile);
-                        Debug.Log(previousXZTile.GetCore());
-                        possibleTiles = previousXZTile.getTiles_Z();
-                        if(possibleTiles == null)Debug.Log("f");
+                    else if (i == 0) {
+                        string[] possibleTile = shootRays(x, z);
+                        XZTile previousZTile = whatIsPreviousZTile(possibleTile[0]);
+                        possibleTiles = previousZTile.getTiles_Z();
                     }
+                    
                     //Debug.Log(possibleTiles);
-                    int randNum=0;
-                    foreach(string s in possibleTiles) {
-                        randNum++;
-                    }
-
-                    if (randNum== 1) {
-                        randNum = 0;
-                    }
-                    else {
-                        randNum = Random.Range(0, possibleTiles.Count-1);
-                    }
+                    int randNum= Random.Range(0, possibleTiles.Count);
+                    
                     Instantiate(XZTile.generate(possibleTiles[randNum], xztiles), new Vector3(x, 0, z), XZTile.generate(possibleTiles[randNum], xztiles).transform.rotation);
                     
-                    yield return new WaitForSeconds(1.0f);
+                    yield return new WaitForSeconds(_SpawnTimer);
                     z += 2;
                 }
                 x += 2;
@@ -130,47 +137,45 @@ public class XZTileManager : MonoBehaviour
         }
     }
 
-    public string shootRays(float x, float z) {
+    public string[] shootRays(float x, float z) {
+        string[] objects = new string[2];
         Vector3 from = new Vector3(x, 1.0f, z);
 
-        Vector3 xx = new Vector3(rayDistance, 0, 0);
-        Vector3 _xx = new Vector3(-rayDistance, 0, 0);
-        Vector3 zz = new Vector3(0, 0, rayDistance);
-        Vector3 _zz = new Vector3(0, 0, -rayDistance);
+        Vector3 xx = new Vector3(_rayDistance, 0, 0);
+        Vector3 _xx = new Vector3(-_rayDistance, 0, 0);
+        Vector3 zz = new Vector3(0, 0, _rayDistance);
+        Vector3 _zz = new Vector3(0, 0, -_rayDistance);
         VisualizeRays(x,z);
 
         RaycastHit objectHit;
-        if(Physics.Raycast(from, xx, out objectHit, rayDistance)) {
-            Debug.Log("RayCast hit x: " + objectHit.collider.name);  
-        }
-        if (Physics.Raycast(from, _xx, out objectHit, rayDistance)) {
-            Debug.Log("RayCast hit -x: " + objectHit.collider.name);
-        }
-        if (Physics.Raycast(from, zz, out objectHit, rayDistance)) {
-            Debug.Log("RayCast hit z: " + objectHit.collider.name);
-        }
-        if (Physics.Raycast(from, _zz, out objectHit, rayDistance)) {
+        if (Physics.Raycast(from, _zz, out objectHit, _rayDistance)) {
             Debug.Log("RayCast hit -z: " + objectHit.collider.name);
-            return objectHit.collider.name;
+            objects[0] = objectHit.collider.name;
         }
-        return null;
+
+        if (Physics.Raycast(from, _xx, out objectHit, _rayDistance)) {
+            Debug.Log("RayCast hit -x: " + objectHit.collider.name);
+            objects[1] = objectHit.collider.name;
+        }
+        
+        return objects;
     }
 
     private void VisualizeRays(float x,float z) {
         Vector3 from = new Vector3(x, 1.0f, z);
 
-        Vector3 xx = new Vector3(rayDistance, 0, 0);
-        Vector3 _xx = new Vector3(-rayDistance, 0, 0);
-        Vector3 zz = new Vector3(0, 0, rayDistance);
-        Vector3 _zz = new Vector3(0, 0, -rayDistance);
+        Vector3 xx = new Vector3(_rayDistance, 0, 0);
+        Vector3 _xx = new Vector3(-_rayDistance, 0, 0);
+        Vector3 zz = new Vector3(0, 0, _rayDistance);
+        Vector3 _zz = new Vector3(0, 0, -_rayDistance);
 
-        Debug.DrawRay(from, xx, Color.red, rayDuration);
-        Debug.DrawRay(from, _xx, Color.yellow, rayDuration);
-        Debug.DrawRay(from, zz, Color.green, rayDuration);
-        Debug.DrawRay(from, _zz, Color.blue, rayDuration);
+       // Debug.DrawRay(from, xx, Color.red, _rayDuration);
+        Debug.DrawRay(from, _xx, Color.yellow, _rayDuration);
+       // Debug.DrawRay(from, zz, Color.green, _rayDuration);
+        Debug.DrawRay(from, _zz, Color.blue, _rayDuration);
     }
 
-    private XZTile whatIsPreviousTile(string possibleTile) {
+    private XZTile whatIsPreviousZTile(string possibleTile) {
         foreach(XZTile xz in xztiles) {
             if (possibleTile == xz.GetCore() + "(Clone)") {
                 return xz;
@@ -178,6 +183,36 @@ public class XZTileManager : MonoBehaviour
         }
         
         return null;
+    }
+
+    private XZTile whatIsPreviousXTile(string possibleTile) {
+        foreach (XZTile xz in xztiles) {
+            if (possibleTile == xz.GetCore() + "(Clone)") {
+                return xz;
+            }
+        }
+
+        return null;
+    }
+
+    private List<string> findCommonTile(XZTile previousZTile,XZTile previousXTile) {
+
+        List<string> z = previousZTile.getTiles_Z();
+        List<string> x = previousXTile.getTiles_X();
+
+        List<string> common = new List<string>();
+        Debug.Log(z.Count + " "+x.Count);
+        for(int i=0;i<z.Count;i++) {
+            for(int j= 0; j < x.Count; j++) {
+                if (z[i]==x[j]) {
+                    common.Add(x[j]);
+                    break;
+                }
+            }
+        }
+        Debug.Log("Finished finding");
+        return common;
+
     }
 
 }

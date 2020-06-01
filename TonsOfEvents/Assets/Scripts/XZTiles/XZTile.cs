@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using UnityEngine;
 
 
@@ -62,6 +61,10 @@ public class XZTile
         return _zfront;
     }
 
+    public List<string> getTiles_X() {
+        return _xfront;
+    }
+
     public static GameObject generate(string what, List<XZTile> list) {
         foreach(XZTile t in list) {
             if (what == t._core) {
@@ -70,6 +73,7 @@ public class XZTile
         }
         return null;
     }
+
     private void InitializeAutoComplete(string core) {
         if (core == "ground") {
             CompleteGround();
@@ -123,16 +127,25 @@ public class XZTile
 
     #region Ground
     private void CompleteGround() {
-        List<string> s = new List<string> { "towerxz", "tower_xz", "towerx_z", "tower_x_z",
-                                            "ground",
-                                            "wall_x", "wall_z",
-                                            "buildingxz","building_xz","buildingx_z","building_x_z",
-                                            "buildingxx","buildingzz","building_xx","building_zz"};
-        this._xfront = s;
-        this._xback = s;
-        
-        this._zfront = s;
-        this._zback= s;
+        this._xfront = new List<string> { //"tower_xz", "tower_x_z",
+                                          "ground", "wall_z",
+                                          "building_xz","building_x_z",
+                                          "building_xx"}; 
+
+        this._xback = new List<string> { //"towerxz", "towerx_z",
+                                         "ground", "wall_z",
+                                         "buildingxz","buildingx_z",
+                                         "buildingxx"};
+
+        this._zfront = new List<string> { //"towerx_z", "tower_x_z",
+                                          "ground", "wall_x",
+                                          "buildingx_z","building_x_z",
+                                          "building_zz"}; 
+
+        this._zback= new List<string> { //"towerxz", "tower_xz",
+                                        "ground", "wall_x",
+                                        "buildingxz","building_xz",
+                                        "buildingzz"};
 
     }
     #endregion
@@ -142,29 +155,29 @@ public class XZTile
     // _XZ means negative X and positive Z, so Tower is looking to the opposite side 
     private void CompleteTowerXZ() {
         
-        this._xfront = new List<string> {"wall_x", "ground"};
+        this._xfront = new List<string> {"wall_x","ground"};//
         this._xback = new List<string> { "tower_xz"};
 
-        this._zfront = new List<string> { "wall_z", "ground" };
-        this._zback = new List<string> { "towerx_z" };
+        this._zfront = new List<string> { "wall_z","ground"};
+        this._zback = new List<string> { "towerx_z" };//
     }
 
     private void CompleteTower_XZ() {
 
         this._xfront = new List<string> { "towerxz"};
-        this._xback = new List<string> { "wall_x", "ground" };
+        this._xback = new List<string> { "wall_x" };//
 
-        this._zfront = new List<string> { "wall_z", "ground" };
+        this._zfront = new List<string> { "wall_z",  };//
         this._zback = new List<string> { "tower_x_z" };
     }
 
     private void CompleteTowerX_Z() {
 
-        this._xfront = new List<string> { "wall_x", "ground" };
+        this._xfront = new List<string> { "wall_x", "ground"};//
         this._xback = new List<string> { "tower_x_z" };
 
         this._zfront = new List<string> { "towerxz" };
-        this._zback = new List<string> { "wall_z", "ground" };
+        this._zback = new List<string> { "wall_z","ground"};//
     }
 
     private void CompleteTower_X_Z() {
@@ -181,8 +194,8 @@ public class XZTile
 
     //CompleteWall_X means the wall is along X-axis
     public void CompleteWall_X() {
-        this._xfront = new List<string> { "tower_x_z", "tower_xz" };
-        this._xback = new List<string> { "towerxz","towerx_z" };
+        this._xfront = new List<string> { "tower_x_z", "tower_xz","wall_x" };
+        this._xback = new List<string> { "towerxz","towerx_z","wall_z" };
 
         this._zfront = new List<string> { "ground" };
         this._zback = new List<string> { "ground" };
@@ -264,7 +277,7 @@ public class XZTile
     }
     private void CompleteBuilding_XX() {
 
-        this._xfront = new List<string> { "buildingcenter" };
+        this._xfront = new List<string> { "buildingcenter", "buildingxx" };
         this._xback = new List<string> { "ground" };
 
         this._zfront = new List<string> { "building_xz" };
