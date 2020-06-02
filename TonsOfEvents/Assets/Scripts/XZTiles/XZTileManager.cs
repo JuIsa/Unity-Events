@@ -31,7 +31,7 @@ public class XZTileManager : MonoBehaviour
 
     private float _rayDistance = 2.0f;
     private float _rayDuration = 20.0f;
-    private float _SpawnTimer = 0.3f;
+    private float _SpawnTimer = 0.1f;
     private int _grid_x = 20;
     private int _grid_z = 20;
 
@@ -111,6 +111,7 @@ public class XZTileManager : MonoBehaviour
                         XZTile previousZTile = whatIsPreviousZTile(possibleTile[0]);
                         XZTile previousXTile = whatIsPreviousXTile(possibleTile[1]);
                         possibleTiles = findCommonTile(previousZTile, previousXTile);
+                       
                         Debug.Log(possibleTiles.Count+" "+possibleTiles[0]);
                     }
                     else if (j == 0) {
@@ -122,9 +123,14 @@ public class XZTileManager : MonoBehaviour
                         XZTile previousZTile = whatIsPreviousZTile(possibleTile[0]);
                         possibleTiles = previousZTile.getTiles_Z();
                     }
+                    int randNum;
+                    if (possibleTiles.Count == 1) {
+                        randNum = 0;
+                    }
+                    else {
+                        randNum = Random.Range(0, possibleTiles.Count);
+                    }
                     
-                    //Debug.Log(possibleTiles);
-                    int randNum= Random.Range(0, possibleTiles.Count);
                     
                     Instantiate(XZTile.generate(possibleTiles[randNum], xztiles), new Vector3(x, 0, z), XZTile.generate(possibleTiles[randNum], xztiles).transform.rotation);
                     
@@ -195,22 +201,70 @@ public class XZTileManager : MonoBehaviour
         return null;
     }
 
-    private List<string> findCommonTile(XZTile previousZTile,XZTile previousXTile) {
+    private List<string> findCommonTile(XZTile previousZTile, XZTile previousXTile) {
 
         List<string> z = previousZTile.getTiles_Z();
         List<string> x = previousXTile.getTiles_X();
 
-        List<string> common = new List<string>();
-        Debug.Log(z.Count + " "+x.Count);
-        for(int i=0;i<z.Count;i++) {
-            for(int j= 0; j < x.Count; j++) {
-                if (z[i]==x[j]) {
-                    common.Add(x[j]);
-                    break;
+        List<string> common = new List<string>() { };
+        Debug.Log(z.Count + " " + x.Count);
+        for(int i = 0; i < z.Count; i++) {
+            Debug.Log(z[i]);
+        }
+        for (int i = 0; i < x.Count; i++) {
+            Debug.Log(x[i]);
+        }
+
+
+        if (x.Count == 1 && z.Count == 1) {
+            Debug.Log("Inside first " +z.Count + " " + x.Count);
+            //Debug.Log(z);
+            if (x[0] == z[0]) {
+                common.Add(x[0]);
+            }
+        }
+        else if (x.Count == 1) {
+            Debug.Log("Inside second " + z.Count + " " + x.Count);
+            for (int i = 0; i < z.Count; i++) {
+                Debug.Log(i);
+                if (x[0] == z[i]) {
+                    common.Add(z[i]);
                 }
             }
         }
-        Debug.Log("Finished finding");
+        else if (z.Count == 1) {
+            Debug.Log("Inside third " + z.Count + " " + x.Count);
+            for (int i = 0; i < x.Count; i++) {
+                Debug.Log(i);
+                if (z[0] == x[i]) {
+                    common.Add(x[i]);
+                }
+            }
+        }
+        else if(x.Count>1 && z.Count>1){ 
+            for(int i = 0; i < x.Count; i++) {
+                for(int j = 0; j < z.Count; j++) {
+                    if (x[i] == z[j]) {
+                        common.Add(x[i]);
+                    }
+                }
+            }
+            /*
+            Debug.Log("Inside fourth " + z.Count + " " + x.Count);
+            foreach (string s in z) {
+                foreach(string ss in x) {
+                    if (s == ss) {
+                        common.Add(ss);
+                    }
+                }
+            }
+            */
+        }
+        if (common.Count==0) {
+            common = new List<string> { "ground" };
+        }
+        Debug.Log("Finished finding "+common[0]);
+        
         return common;
 
     }
