@@ -29,11 +29,13 @@ public class XZTileManager : MonoBehaviour
     public GameObject buildingcenterPref;
     #endregion
 
-    private float _rayDistance = 2.0f;
-    private float _rayDuration = 20.0f;
+    private float _rayDistance = 1.5f;
+    private float _rayDuration = 2.0f;
     private float _SpawnTimer = 0.1f;
-    private int _grid_x = 20;
-    private int _grid_z = 20;
+    [SerializeField]
+    private int _grid_x = 10;
+    [SerializeField]
+    private int _grid_z = 10;
 
     private string[] tiles = new string[] {"towerxz", "tower_xz", "towerx_z", "tower_x_z",
                                             "ground",
@@ -112,7 +114,7 @@ public class XZTileManager : MonoBehaviour
                         XZTile previousXTile = whatIsPreviousXTile(possibleTile[1]);
                         possibleTiles = findCommonTile(previousZTile, previousXTile);
                        
-                        Debug.Log(possibleTiles.Count+" "+possibleTiles[0]);
+                        //Debug.Log(possibleTiles.Count+" "+possibleTiles[0]);
                     }
                     else if (j == 0) {
                         string randomTile = tiles[Random.Range(0, tiles.Length)];
@@ -129,6 +131,8 @@ public class XZTileManager : MonoBehaviour
                     }
                     else {
                         randNum = Random.Range(0, possibleTiles.Count);
+                        Debug.Log(randNum);
+                        
                     }
                     
                     
@@ -155,12 +159,12 @@ public class XZTileManager : MonoBehaviour
 
         RaycastHit objectHit;
         if (Physics.Raycast(from, _zz, out objectHit, _rayDistance)) {
-            Debug.Log("RayCast hit -z: " + objectHit.collider.name);
+          //  Debug.Log("RayCast hit -z: " + objectHit.collider.name);
             objects[0] = objectHit.collider.name;
         }
 
         if (Physics.Raycast(from, _xx, out objectHit, _rayDistance)) {
-            Debug.Log("RayCast hit -x: " + objectHit.collider.name);
+            //Debug.Log("RayCast hit -x: " + objectHit.collider.name);
             objects[1] = objectHit.collider.name;
         }
         
@@ -207,35 +211,35 @@ public class XZTileManager : MonoBehaviour
         List<string> x = previousXTile.getTiles_X();
 
         List<string> common = new List<string>() { };
-        Debug.Log(z.Count + " " + x.Count);
+        //Debug.Log(z.Count + " " + x.Count);
         for(int i = 0; i < z.Count; i++) {
-            Debug.Log(z[i]);
+            //Debug.Log(z[i]);
         }
         for (int i = 0; i < x.Count; i++) {
-            Debug.Log(x[i]);
+            //Debug.Log(x[i]);
         }
 
 
         if (x.Count == 1 && z.Count == 1) {
-            Debug.Log("Inside first " +z.Count + " " + x.Count);
+            //Debug.Log("Inside first " +z.Count + " " + x.Count);
             //Debug.Log(z);
             if (x[0] == z[0]) {
                 common.Add(x[0]);
             }
         }
         else if (x.Count == 1) {
-            Debug.Log("Inside second " + z.Count + " " + x.Count);
+            //Debug.Log("Inside second " + z.Count + " " + x.Count);
             for (int i = 0; i < z.Count; i++) {
-                Debug.Log(i);
+               // Debug.Log(i);
                 if (x[0] == z[i]) {
                     common.Add(z[i]);
                 }
             }
         }
         else if (z.Count == 1) {
-            Debug.Log("Inside third " + z.Count + " " + x.Count);
+            //Debug.Log("Inside third " + z.Count + " " + x.Count);
             for (int i = 0; i < x.Count; i++) {
-                Debug.Log(i);
+               // Debug.Log(i);
                 if (z[0] == x[i]) {
                     common.Add(x[i]);
                 }
@@ -263,7 +267,7 @@ public class XZTileManager : MonoBehaviour
         if (common.Count==0) {
             common = new List<string> { "ground" };
         }
-        Debug.Log("Finished finding "+common[0]);
+        //Debug.Log("Finished finding "+common[0]);
         
         return common;
 

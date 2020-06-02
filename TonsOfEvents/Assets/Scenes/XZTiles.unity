@@ -181,6 +181,8 @@ MonoBehaviour:
     type: 3}
   buildingcenterPref: {fileID: 8331383170935218696, guid: e67a725a480255449b73b1bbe0172f04,
     type: 3}
+  _grid_x: 15
+  _grid_z: 15
 --- !u!4 &34771134
 Transform:
   m_ObjectHideFlags: 0
