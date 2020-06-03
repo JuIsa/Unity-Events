@@ -89,9 +89,15 @@ public class XZTileManager : MonoBehaviour
         xztiles.Add(building_x_z);
         xztiles.Add(building_zz);
         xztiles.Add(buildingcenter);
-        StartCoroutine(startShooting());
+        
         
 
+    }
+
+    private void Update() {
+        if (Input.GetKeyDown(KeyCode.G)) {
+            StartCoroutine(startShooting());
+        }
     }
 
     public IEnumerator startShooting() {
